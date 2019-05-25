@@ -3,7 +3,10 @@ package com.algaworks.algamoney.api.resource;
 import com.algaworks.algamoney.api.event.RecursoCriadoEvent;
 import com.algaworks.algamoney.api.model.Pessoa;
 import com.algaworks.algamoney.api.repository.PessoaRepository;
+import com.algaworks.algamoney.api.service.PessoaService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +21,13 @@ public class PessoaResource {
 
     private PessoaRepository pessoaRepository;
     private ApplicationEventPublisher applicationEventPublisher;
+    private PessoaService pessoaService;
 
-    public PessoaResource(PessoaRepository pessoaRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public PessoaResource(PessoaRepository pessoaRepository, ApplicationEventPublisher applicationEventPublisher,
+                          PessoaService pessoaService) {
         this.pessoaRepository = pessoaRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.pessoaService = pessoaService;
     }
 
     @PostMapping
@@ -48,6 +54,12 @@ public class PessoaResource {
         pessoaRepository.deleteById(codigo);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
+        Pessoa pessoaSalva = pessoaService.atualizar(codigo, pessoa);
+        return ResponseEntity.ok(pessoaSalva);
     }
 
 }
