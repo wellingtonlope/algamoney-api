@@ -43,4 +43,11 @@ public class PessoaResource {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Pessoa> remover(@PathVariable Long codigo) {
+        pessoaRepository.deleteById(codigo);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
