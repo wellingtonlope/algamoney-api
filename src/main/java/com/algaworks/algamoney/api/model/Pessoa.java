@@ -1,5 +1,7 @@
 package com.algaworks.algamoney.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -22,6 +24,12 @@ public class Pessoa {
 
     @NotNull
     private Boolean ativo;
+
+    @JsonIgnore
+    @Transient
+    public boolean isInativo() {
+        return !this.ativo;
+    }
 
     public Long getCodigo() {
         return codigo;
