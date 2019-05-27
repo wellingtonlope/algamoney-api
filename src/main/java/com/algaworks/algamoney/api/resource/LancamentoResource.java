@@ -4,6 +4,7 @@ import com.algaworks.algamoney.api.event.RecursoCriadoEvent;
 import com.algaworks.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler;
 import com.algaworks.algamoney.api.model.Lancamento;
 import com.algaworks.algamoney.api.repository.LancamentoRepository;
+import com.algaworks.algamoney.api.repository.filter.LancamentoFilter;
 import com.algaworks.algamoney.api.service.LancamentoService;
 import com.algaworks.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 import org.springframework.context.ApplicationEventPublisher;
@@ -38,8 +39,8 @@ public class LancamentoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Lancamento>> listar() {
-        return ResponseEntity.ok(this.lancamentoRepository.findAll());
+    public ResponseEntity<List<Lancamento>> pesquisar(LancamentoFilter lancamentoFilter) {
+        return ResponseEntity.ok(this.lancamentoRepository.filtrar(lancamentoFilter));
     }
 
     @GetMapping("/{codigo}")
